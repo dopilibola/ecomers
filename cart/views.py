@@ -8,13 +8,19 @@ def cart_summary(request):
 
 
 def cart_add(request):
+
+    cart = Cart(request)
+
     if request.method == 'POST':
         product_id = int(request.POST.get('product_id'))
         product = get_object_or_404(Product, id=product_id)
         cart = Cart(request)
         cart.add(product=product)
-        return JsonResponse({'Product Name': product.name})
 
+        cart_quantity = cart.__len__()
+
+        # return JsonResponse({'Product Name': product.name})
+        return JsonResponse({'qty': cart_quantity})
     return HttpResponse("Invalid request", status=400)
 
 
