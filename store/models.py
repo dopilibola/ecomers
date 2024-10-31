@@ -30,7 +30,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.CharField(max_length=200, default='')
     image = models.ImageField(upload_to='uploads/products/')
-    # sele staff
+    # sale staff
     is_sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 
@@ -39,7 +39,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    costomer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    costumer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     address = models.CharField(max_length=100, default='', blank=True)
     phone = models.CharField(max_length=20, default='', blank=True)
