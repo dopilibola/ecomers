@@ -5,7 +5,7 @@
 
 <div class="container">
 <br/>
-    <div class="card mb-3" >
+  <div class="card mb-3" >
         <div class="row g-0">
           <div class="col-md-4">
             <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
@@ -37,18 +37,28 @@
                 {% else %}
                     ${{ product.price }}
                     <br/>ID: {{ product.id }}
+                {% endif %}
+                  <br/><br/> 
+<div class="row justify-content-center">
+  <div class="col-md-2">Quantity:</div>
+                  <div class="col-md-2">
 
-                {% endif%}
-
-
-
-
-<br>
+                  <select class="form-select form-select-sm" id="qty-cart">
+                    
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                    </div>
+                  </div>
+                  <br/><br/>
               <a href="{% url 'home'%}" class="btn btn-secondary">Home</a>
               <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
             
             
-            </center>             
+    </center>              
         </div>
     </div>
 </div>
@@ -69,9 +79,10 @@ $(document).on('click', '#add-cart', function(e){
       type: 'POST',
       url: '{% url 'cart_add' %}',
       data: {
-        product_id: $('#add-cart').val(),
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        actions: 'post'
+    product_id: $('#add-cart').val(),
+    product_qty: $('#qty-cart option:selected').text(),
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    actions: 'post'
       },
 
       success: function(json){
