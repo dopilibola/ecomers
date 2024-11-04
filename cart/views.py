@@ -39,7 +39,24 @@ def cart_add(request):
 
 
 def cart_delete(request):
-    pass
+    cart = Cart(request)
+    
+    # if request.POST.get('action') == 'POST':
+    if request.method == 'POST':
+        product_id = int(request.POST.get('product_id'))
+
+        cart.delete(product=product_id)
+
+        response = JsonResponse({'product':product_id})
+        return response
+        # return redirect('cart_summary')
+
+    return JsonResponse({'eror': 'Invalid action'}, status=400)
+
+
+
+
+
 
 def cart_update(request):
     cart = Cart(request)
@@ -49,8 +66,8 @@ def cart_update(request):
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
 
-        print(f"Product ID: {product_id}")
-        print(f"Product Quantity: {product_qty}")
+        # print(f"Product ID: {product_id}")
+        # print(f"Product Quantity: {product_qty}")
 
         cart.update(product=product_id, quantity=product_qty)
 

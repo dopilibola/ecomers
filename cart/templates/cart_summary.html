@@ -82,7 +82,7 @@
                                     <br/><br>
                               <a href="{% url 'home'%}" class="btn btn-secondary">Home</a>
                               <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart"> update </button>
-                                
+                              <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product"> dalete </button>
                                 
                             </center>             
                         </div>
@@ -103,7 +103,7 @@
 
 
 <script>
-
+//update cart
 $(document).on('click', '.update-cart', function(e){
     e.preventDefault();
 
@@ -117,26 +117,41 @@ $(document).on('click', '.update-cart', function(e){
     csrfmiddlewaretoken: '{{ csrf_token }}',
     actions: 'post'
       },
-    
       success: function(json){
         console.log(json)
         document.getElementById("cart_quantity").textContent = json.qty
         location.reload();
-    
       },
-    
-      error: function(xhr, errmsg, err){
-            
+      error: function(xhr, errmsg, err){     
       }
-    
-    
-    
-    });
-    
-    
+    });  
 })
 
 
+
+
+//dalete cart
+$(document).on('click', '.delete-product', function(e){
+    e.preventDefault();
+
+    //var productid = $(this).data('index');
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_delete' %}',
+        data: {
+    product_id: $(this).data('index'),
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    actions: 'post'
+      },
+      success: function(json){
+        //console.log(json)
+       // document.getElementById("cart_quantity").textContent = json.qty
+        location.reload();
+      },
+      error: function(xhr, errmsg, err){     
+      }
+    });  
+})
 </script>
 
 {% endblock%}
