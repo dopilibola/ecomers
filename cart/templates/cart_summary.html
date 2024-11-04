@@ -7,15 +7,15 @@
 
 {% block content %}
          <!--header-->
-        <header class="bg-dark text-white py-5">
-            <div class="container px-4 px-lg-5">
-                <div class="text-center text-uppercase">
-                    <h1 class="mb-4">Shopping Cart</h1>
-                    <p class="lead">view Your cart... </p>
-                </div>
+    <header class="bg-dark text-white py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="text-center text-uppercase">
+                <h1 class="mb-4">Shopping Cart</h1>
+                <p class="lead">view Your cart... </p>
             </div>
-        </header>
-            <br/>
+        </div>
+    </header>
+        <br/>
 
         <div class="container">
         {% if cart_products %}
@@ -60,16 +60,15 @@
                                     <br/><br/>
                                 <div class="row justify-content-center">
                             <div class="col-md-2"style="width: 100px; height: 30px;">Quantity:</div>
-                                        <div class="col-md-2">
+                                         <div class="col-md-2">
                                       
-                                        <select class="form-select form-select-sm" id="qty-cart" style="width: 100px; height: 38px;">
+                                        <select class="form-select form-select-sm" id="select{{product.id}}">
 
                                     {% for key, value in quantities.items %}
                                         {% if key  == product.id|slugify %}
                                     <option selected> {{ value }} </option>
                                         {% endif %}
                                     {% endfor %}
-
 
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -82,7 +81,7 @@
 
                                     <br/><br>
                               <a href="{% url 'home'%}" class="btn btn-secondary">Home</a>
-                              <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+                              <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart"> update </button>
                                 
                                 
                             </center>             
@@ -100,5 +99,44 @@
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         {% endif %}
         </div>
+
+
+
+<script>
+
+$(document).on('click', '.update-cart', function(e){
+    e.preventDefault();
+
+    var productid = $(this).data('index');
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_update' %}',
+        data: {
+    product_id: $(this).data('index'),
+    product_qty: $('#select' + productid + ' option:selected').text(),
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    actions: 'post'
+      },
+    
+      success: function(json){
+        console.log(json)
+        document.getElementById("cart_quantity").textContent = json.qty
+        location.reload();
+    
+      },
+    
+      error: function(xhr, errmsg, err){
+            
+      }
+    
+    
+    
+    });
+    
+    
+})
+
+
+</script>
 
 {% endblock%}

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .cart import Cart
 from store.models import Product
 from django.http import JsonResponse, HttpResponse
+from django.shortcuts import redirect
 
 def cart_summary(request):
 
@@ -19,6 +20,8 @@ def cart_add(request):
     if request.method == 'POST':
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
+
+
 
         product = get_object_or_404(Product, id=product_id)
         cart = Cart(request)
@@ -39,4 +42,20 @@ def cart_delete(request):
     pass
 
 def cart_update(request):
-    pass
+    cart = Cart(request)
+    
+    # if request.POST.get('action') == 'POST':
+    if request.method == 'POST':
+        product_id = int(request.POST.get('product_id'))
+        product_qty = int(request.POST.get('product_qty'))
+
+        print(f"Product ID: {product_id}")
+        print(f"Product Quantity: {product_qty}")
+
+        cart.update(product=product_id, quantity=product_qty)
+
+        response = JsonResponse({'qty':product_qty})
+        return response
+        # return redirect('cart_summary')
+
+    return JsonResponse({'eror': 'Invalid action'}, status=400)
