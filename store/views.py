@@ -9,6 +9,22 @@ from .forms import SignUpForm
 from django import forms
 
 
+def category_summary(request):
+    categories = Category.objects.all()
+    return render(request, 'category_summary.html', {"categories":categories})
+
+
+
+
+
+
+
+
+
+
+
+
+
 def category(request, foo):
     # spaces
     foo = foo.replace('-', ' ')
@@ -21,10 +37,6 @@ def category(request, foo):
     except:
         messages.success(request, ("Category dosn't exist  "))
         return redirect('home')
-
-
-
-
 
 
 def product(request, pk):
