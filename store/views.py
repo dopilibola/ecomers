@@ -14,7 +14,20 @@ def update_password(request):
         current_user = request.user
 
         if request.method == 'POST':
-            pass
+            form = ChangePasswordForm(current_user, request.POST)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your password has been update please log in agin")
+                # login(request, current_user)
+                return redirect('login')
+            else: 
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+                    return redirect('update_password')
+
+
+
         
         else:
             form = ChangePasswordForm(current_user)
