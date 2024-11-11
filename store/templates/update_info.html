@@ -13,11 +13,19 @@
         <div class="row">
             <center>
                 <div class="col-md-6 offset-mb-3">
+                        <br/><br/>
+                    <strong> Billing information</strong>
+                    <br/><br/>
                     <form method="POST" actions="{% url 'update_info' %}">
                             {% csrf_token %}
 
                             {{ form.as_p  }}
-                            <br/></br/>
+                            <br/><br/>
+                            <strong> Shipping information </strong>
+                            <br/><br/>
+                            {{ shipping_form.as_p }}
+
+                            <br/><br/>
                             <button type="submit" class="btn btn-secondary">Update profile</button>
                     </form>
 <br/></br/>
