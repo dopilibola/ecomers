@@ -41,10 +41,23 @@
                                 {% endif %}
                             {% endfor %}</small>
                             <br/><br/>
-
-                        {% endfor %}
+                            {% endfor %}
+                            <strong>Total: ${{ totals }}</strong>
+                            <br/><br/>
+                            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">update Items</a>
+                        </div>
                     </div>
-                    </div>
+<br/><br/><br/><br/><br/><br/>
+<div class="card">
+    <div class="card-header">
+      Shipping info
+    </div>
+    <div class="card-body">
+        {{ shipping_form.as_p }}
+    </div>
+  </div>
+<a href="#" class="btn btn-secondary"> content to billing</a>
+<br/>
 
             </div>
         </div>
