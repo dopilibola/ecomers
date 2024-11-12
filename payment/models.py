@@ -12,6 +12,7 @@ class ShippingAddress(models.Model):
     shipping_state = models.CharField(max_length=255, null=True, blank=True)
     shipping_zipcode = models.CharField(max_length=255, null=True, blank=True)
     shipping_country = models.CharField(max_length=255)
+    
 
     # Don't pluralize address
     class Meta:
@@ -26,6 +27,7 @@ def create_shipping(sender, instance, created, **kwargs):
         user_shipping.save()
 
 post_save.connect(create_shipping, sender=User)
+
     
     
     
