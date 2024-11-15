@@ -4,12 +4,42 @@ from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress
 from django.contrib import messages
 
+def process_order(request):
+    if request.POST:
+        # Get Billing Info from the last page 
+        payment_form = PaymentForm(request.POST or None)
+        #  Get Shipping Session Date
+        my_shipping = request.session.get('my_shipping')
+        # print(my_shipping)
+
+        # crate shipping address from session info 
+        shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}\n"
+        print(shipping_address)        
+
+
+ 
+
+        messages.success(request, "Order Placed!")
+        return redirect('home')
+
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
+
+
+
+
 def billing_info(request):
     if request.POST:
         cart = Cart(request)
         cart_products = cart.get_prods
         quantities = cart.get_quants
         totals = cart.cart_total()
+
+        # Create a session with Shipping Info 
+        my_shipping = request.POST
+        request.session['my_shipping'] = my_shipping
+
 
         # Check to see if user is logged in 
         if request.user.is_authenticated:
@@ -23,8 +53,8 @@ def billing_info(request):
             return render(request, "billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_info":request.POST, "billing_form":billing_form })
 
 
-        shipping_form = request.POST
-        return render(request, "billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":shipping_form})
+            shipping_form = request.POST
+            return render(request, "billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":shipping_form})
     else:
         messages.success(request, "Access Dinied")
         return redirect('home')
