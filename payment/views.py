@@ -6,6 +6,39 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from store.models import Product
 
+def not_shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, "not_shipped_dash.html", {})
+    else:
+        messages.success(request, "")
+        return redirect('home')
+
+
+def shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, "shipped_dash.html", {})
+    else:
+        messages.success(request, "")
+        return redirect('home')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def process_order(request):
     if request.POST:
         # get cart
