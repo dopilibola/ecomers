@@ -4,7 +4,7 @@ from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib.auth.models import User
 from django.contrib import messages
-from store.models import Product
+from store.models import Product, Profile
 import datetime 
 
 def orders(request, pk):
@@ -70,7 +70,7 @@ def shipped_dash(request):
             num = request.POST['num']
             # grab the order
             order = Order.objects.filter(id=num)
-            
+
             now = datetime.datetime.now()
             # update order
             orders.update(shipped=False)
@@ -162,7 +162,10 @@ def process_order(request):
                     # Delete the key 
                     del request.session[key]
 
-
+            # delete Cart from database (old cart field)
+            current_user = Profile.objects.filter(user__id=request.user.id)
+            # Delete shopping cart in database (old_cart field)
+            current_user.update(old_cart="")
 
             messages.success(request, "Order Placed!")
             return redirect('home')
