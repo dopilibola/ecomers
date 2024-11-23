@@ -1,10 +1,5 @@
 from django.shortcuts import render, redirect
 from cart.cart import Cart
-<<<<<<< HEAD
-from payment.forms import ShippingForm
-from payment.models import ShippingAddress
-from django.contrib import messages
-=======
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib.auth.models import User
@@ -193,7 +188,6 @@ def process_order(request):
 
 
 
->>>>>>> develop
 
 def billing_info(request):
     if request.POST:
@@ -202,18 +196,6 @@ def billing_info(request):
         quantities = cart.get_quants
         totals = cart.cart_total()
 
-<<<<<<< HEAD
-        # Check to see if user is logged in 
-        if request.user.is_authenticated:
-            return render(request, "billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_info":request.POST })
-        else:
-            # Not logged in
-            pass
-
-
-        shipping_form = request.POST
-        return render(request, "billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":shipping_form})
-=======
         # Create a session with Shipping Info 
         my_shipping = request.POST
         request.session['my_shipping'] = my_shipping
@@ -233,7 +215,6 @@ def billing_info(request):
 
             shipping_form = request.POST
             return render(request, "billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":shipping_form})
->>>>>>> develop
     else:
         messages.success(request, "Access Dinied")
         return redirect('home')
